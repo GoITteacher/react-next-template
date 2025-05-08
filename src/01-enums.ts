@@ -8,11 +8,42 @@
  * Enum варто використовувати лише тоді, коли є реальна потреба в цьому.
  */
 
-// "pending", "fulfilled", "rejected"
-const requestStatus = "";
+// type Status = "pending" | "fulfilled" | "rejected";
 
-// 200, 400, 500
-const requestCode = "";
+enum Status {
+  Pending = "pending",
+  Fulfilled = "fulfilled",
+  Rejected = "rejected",
+}
+
+const requestStatus: Status = Status.Rejected;
+
+// type Code = 200 | 201 | 400 | 500;
+
+enum ReqCode {
+  Success = 200,
+  Created = 201,
+  NotFound = 400,
+  ServerError = 500,
+}
+
+const requestCode: ReqCode = ReqCode.Success;
+
+enum Role {
+  Admin = "admin",
+  User = "user",
+  Guest = "guest",
+}
 
 // admin, user, guest
-const userRole = "";
+const userRole: Role = Role.User;
+
+interface User {
+  username: string;
+  role: Role;
+}
+
+const user: User = {
+  username: "jacob",
+  role: Role.Guest,
+};
