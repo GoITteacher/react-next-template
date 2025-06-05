@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteTask, updateTask } from "../../services/taskService";
-import type { Task, TaskUpdateData } from "../../types/task";
+import type { Task } from "../../types/task";
+import { useDeleteTask } from "../../hooks/useDeleteTask";
+import { useUpdateTask } from "../../hooks/useUpdateTask";
 import css from "./TaskList.module.css";
 
 interface TaskListProps {
@@ -8,21 +8,8 @@ interface TaskListProps {
 }
 
 export default function TaskList({ tasks }: TaskListProps) {
-  const queryClient = useQueryClient();
-
-  const deleteTaskMutation = useMutation({
-    mutationFn: (id: string) => deleteTask(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    },
-  });
-
-  const updateTaskMutation = useMutation({
-    mutationFn: (updatedTask: TaskUpdateData) => updateTask(updatedTask),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    },
-  });
+  const deleteTaskMutation = useDeleteTask();
+  const updateTaskMutation = useUpdateTask();
 
   const handleUpdate = (task: Task) => {
     updateTaskMutation.mutate({

@@ -3,8 +3,12 @@ import type { NewTaskData, Task, TaskUpdateData } from "../types/task";
 
 axios.defaults.baseURL = "https://62584f320c918296a49543e7.mockapi.io";
 
-export const getTasks = async () => {
-  const res = await axios.get<Task[]>("/tasks");
+export const getTasks = async (searchQuery: string) => {
+  const res = await axios.get<Task[]>("/tasks", {
+    params: {
+      search: searchQuery,
+    },
+  });
   return res.data;
 };
 

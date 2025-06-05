@@ -1,22 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCreateTask } from "../../hooks/useCreateTask";
 import css from "./TaskForm.module.css";
-import { addTask } from "../../services/taskService";
-import { NewTaskData } from "../../types/task";
 
 interface TaskFormProps {
   onSuccess: () => void;
 }
 
 export default function TaskForm({ onSuccess }: TaskFormProps) {
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: (taskData: NewTaskData) => addTask(taskData),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      onSuccess();
-    },
-  });
+  const { mutate, isPending } = useCreateTask(onSuccess);
 
   const handleSubmit = (formData: FormData) => {
     mutate({
