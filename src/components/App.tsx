@@ -19,10 +19,15 @@ export default function App() {
   const [topic, setTopic] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading, isError, isSuccess } = useQuery({
+  const { data, isLoading, isError, isSuccess, error, refetch } = useQuery({
     queryKey: ["articles", topic, currentPage],
     queryFn: () => fetchArticles(topic, currentPage),
     enabled: topic !== "",
+    initialData: [],
+    refetchInterval: 3000,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
     placeholderData: keepPreviousData,
   });
 
