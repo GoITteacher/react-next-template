@@ -2,23 +2,32 @@
  * Union (об'єднання) дозволяє вказати кілька можливих варіантів типу.
  * Зручно там, де змінна може набувати різних форм залежно від контексту.
  */
-type Identifier = number | string;
+// type Identifier = number | string;
 
-const numericId: Identifier = 42;
-const stringId: Identifier = "user-42";
+// type UserAge = number | string;
+
+// const userAge: UserAge = 25;
+
+// const numericId: Identifier = 42;
+// const stringId: Identifier = "user-42";
 
 /**
  * Літеральні типи корисні для значень, що можуть бути лише з певного набору.
  * Часто використовуються для статусів, ролей, фільтрів тощо.
  */
-type OrderStatus = "pending" | "shipped" | "delivered" | "canceled";
+// type OrderStatus = "pending" | "shipped" | "delivered" | "canceled";
 
-interface Order {
-  id: Identifier;
-  status: OrderStatus;
-}
+// const status: OrderStatus = '';
 
-const order: Order = { id: "A-1024", status: "pending" };
+// document.querySelector()?.insertAdjacentHTML('')
+
+
+// interface Order {
+//   id: Identifier;
+//   status: OrderStatus;
+// }
+
+// const order: Order = { id: "A-1024", status: "pending" };
 
 /**
  * При роботі з union типами складається дрібна логіка перевірок (type guards).

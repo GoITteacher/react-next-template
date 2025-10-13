@@ -1,3 +1,4 @@
+
 /**
  * Файл із практичними задачами на типізацію.
  * ⚙️ Правила:
@@ -19,7 +20,19 @@ export const calculateScore = (points: unknown, bonusMultiplier: unknown) => {
  * Опиши тип для знімку сесії з вкладеним об'єктом `metadata`.
  * Переконайся, що `roles` — це масив літеральних значень, а не просто `string[]`.
  */
-export const sessionSnapshot: unknown = {
+
+interface Session {
+  userId: number;
+  token: string;
+  expiresAt: Date,
+  metadata: {
+    ip: string;
+    roles: string[]
+  }
+}
+
+
+export const sessionSnapshot: Session = {
   userId: 501,
   token: "abc123",
   expiresAt: new Date(),
@@ -32,26 +45,26 @@ export const sessionSnapshot: unknown = {
 /* 🧩 Challenge 03 — Primitives
  * Задай правильний примітивний тип без використання бридкого `any`.
  */
-export const currencyCode: unknown = "UAH";
+export const currencyCode: string = "UAH";
 
 /* 🧩 Challenge 04 — Types
  * Опиши літерально-об'єднувальний тип стани завантаження.
  */
-export type LoadingState = unknown;
+export type LoadingState = 'pending' | 'filfilled' | 'rejected';
 
 /* 🧩 Challenge 05 — Arrays
  * Перетвори тип на масив чисел. Подумай, чи потрібна незмінність (`readonly`).
  */
-export const temperatureHistory: unknown = [18.6, 17.4, 19.1, 20];
+export const temperatureHistory: number[] = [18.6, 17.4, 19.1, 20];
 
 /* 🧩 Challenge 06 — Functions
  * Типізуй аргументи та результат. Продумай, які значення може приймати `locale`.
  */
 export const formatUserName = (
-  firstName: unknown,
-  lastName: unknown,
-  locale?: unknown
-) => {
+  firstName: string,
+  lastName: string,
+  locale?: string
+):string => {
   const fullName = `${String(firstName)} ${String(lastName)}`.trim();
   return locale === "ua" ? `Привіт, ${fullName}` : `Hello, ${fullName}`;
 };
@@ -59,12 +72,23 @@ export const formatUserName = (
 /* 🧩 Challenge 07 — Primitives
  * Використай числовий тип, який відповідає обмеженням на кількість запитів.
  */
-export const maxDailyRequests: unknown = 1000;
+export const maxDailyRequests: number = 1000;
 
 /* 🧩 Challenge 08 — Objects
  * Типізуй налаштування фіч-тогла. Додай `readonly`, де це має сенс.
  */
-export const featureToggle: unknown = {
+
+interface Feature{
+key:string;
+enabled: boolean;
+rolloutPercentage: number;
+lastUpdatedBy: {
+  id: number;
+  name: string;
+}
+}
+
+export const featureToggle: Feature = {
   key: "beta-layout",
   enabled: true,
   rolloutPercentage: 0.4,

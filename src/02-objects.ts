@@ -2,11 +2,46 @@
  * Об'єкти описують структуру даних, де кожне поле має власний тип.
  * Можна використовувати як анонімні типи, так і `interface` чи `type`.
  */
-const book: { title: string; pages: number; isPublished: boolean } = {
-  title: "Learning TypeScript",
-  pages: 320,
-  isPublished: true,
-};
+
+interface Address {
+  city: string;
+  country: string;
+  street: string;
+}
+
+
+
+interface User {
+  age: number;
+  isStudent: boolean;
+  name: string;
+  address: {
+    city: string;
+    country: string;
+    street: string;
+  },
+}
+
+const user: User = {
+  age: 25,
+  isStudent: true,
+  name: 'Vasya',
+  address: {
+    city: '',
+    country:'',
+    street: ''
+  }
+}
+
+
+
+
+
+// const book: { title: string; pages: number; isPublished: boolean } = {
+//   title: "Learning TypeScript",
+//   pages: 320,
+//   isPublished: true,
+// };
 
 /**
  * `interface` дозволяє повторно використовувати опис структури.
