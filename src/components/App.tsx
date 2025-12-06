@@ -1,20 +1,19 @@
-import AppBar from "./AppBar/AppBar";
-import CatList from "./CatList";
-import catData from "../cats.json";
-import { Cat } from "../types/cat";
-
-const allCats: Cat[] = catData;
-
-const takenCats: Cat[] = allCats.filter((cat) => cat.taken);
+import Container from "./books/Container/Container";
+import Footer from "./Footer/Footer";
+import Header from "./Header/Header";
+import MainSection from "./MainSection/MainSection";
+import Sidebar from "./Sidebar/Sidebar";
 
 export default function App() {
   return (
-    <>
-      <AppBar />
-      <CatList cats={allCats} />
-
-      <h2>Taken cats</h2>
-      <CatList cats={takenCats} />
-    </>
+    <div>
+      <Header />
+      <main>
+        <Sidebar />
+        <Container />
+        <MainSection />
+      </main>
+      <Footer />
+    </div>
   );
 }
