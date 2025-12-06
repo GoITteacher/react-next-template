@@ -1,14 +1,6 @@
 /**
- * - Зберігає стан count
- * - Збільшує поточне значення count при onClick
- * - Рендериться у App
+ * Заглушка лічильника: додайте пропси та обробники самостійно.
  */
-
-interface ClickCounterProps {
-  value: number;
-  onUpdate: () => void;
-}
-
-export default function ClickCounter({ value, onUpdate }: ClickCounterProps) {
-  return <button onClick={onUpdate}>Clicks: {value}</button>;
+export default function ClickCounter() {
+  return <button>Clicks: 0</button>;
 }

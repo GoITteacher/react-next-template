@@ -1,12 +1,6 @@
 /**
- * - Відображає текст з поточним значенням count
- * - Рендериться у App
+ * Заглушка для відображення лічильника: додайте пропси під час уроку.
  */
-
-interface CountDisplayProps {
-  count: number;
-}
-
-export default function CountDisplay({ count }: CountDisplayProps) {
-  return <div>The current counter value is {count}</div>;
+export default function CountDisplay() {
+  return <div>The current counter value is ...</div>;
 }
