@@ -1,49 +1,44 @@
 /**
- * Перелічення (enum)
+ * Перелічення (enum) та літеральні об'єднання.
  *
- * Enum - це список іменованих констант, які можна використовувати як змінні.
- * Union Type - це просто список допустимих значень, які можна присвоювати змінним.
- *
- * Якщо не знаєш, що вибрати - завжди починай з union type.
- * Enum варто використовувати лише тоді, коли є реальна потреба в цьому.
+ * План:
+ * - Коли обрати union замість enum, а коли enum корисний.
+ * - Строкові vs числові enum-и, автонумерація.
+ * - Підказки й захист від опечаток завдяки літералам.
+ * - Завдання: оголосити статуси, коди відповіді та ролі користувача.
  */
+//!======================================================
+// union vs enum: union простіший і не генерує додатковий код; enum додає рантайм-об'єкт і зручний, коли потрібні посилання в JS-коді.
+//!======================================================
+// string vs number enums: рядкові уникють зворотного мапінгу; числові можуть автонумерувати, але вимагають обережності.
+//!======================================================
+// підказки: літеральні типи дають автокомпліт і перевірку значень; enum робить те саме, але через властивості об'єкта.
+//!======================================================
 
-// type Status = "pending" | "fulfilled" | "rejected";
+//!======================================================
+/* 🧩 Task 1 — статуси запиту
+ * Заміни any на літеральний union або enum зі значеннями pending/fulfilled/rejected.
+ */
+export const requestStatus: any = "pending";
 
-enum Status {
-  Pending = "pending",
-  Fulfilled = "fulfilled",
-  Rejected = "rejected",
-}
+/* 🧩 Task 2 — коди відповіді
+ * Опиши або union чисел, або enum з кодами 200/201/400/500.
+ * Зараз тип надто широкий.
+ */
+export const requestCode: unknown = 200;
 
-const requestStatus: Status = Status.Rejected;
+/* 🧩 Task 3 — ролі користувача
+ * Створи ролі admin/user/guest через union чи enum.
+ * Типізуй поле role у користувача.
+ */
+export type Role = any;
 
-// type Code = 200 | 201 | 400 | 500;
-
-enum ReqCode {
-  Success = 200,
-  Created = 201,
-  NotFound = 400,
-  ServerError = 500,
-}
-
-const requestCode: ReqCode = ReqCode.Success;
-
-enum Role {
-  Admin = "admin",
-  User = "user",
-  Guest = "guest",
-}
-
-// admin, user, guest
-const userRole: Role = Role.User;
-
-interface User {
+export interface User {
   username: string;
-  role: Role;
+  role: unknown;
 }
 
-const user: User = {
+export const currentUser: User = {
   username: "jacob",
-  role: Role.Guest,
+  role: "admin",
 };

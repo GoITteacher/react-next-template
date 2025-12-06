@@ -1,81 +1,74 @@
 /**
- * Типізація HTTP-запитів з Axios
+ * Типізація HTTP-запитів з Axios.
  *
- * https://dummyjson.com/docs/posts
+ * План:
+ * - Generics у axios.get/post для типізації даних.
+ * - Опис контрактів відповіді (DTO) і вкладених полів.
+ * - Типізація запитів: params/body, коди відповіді.
+ * - Обробка помилок AxiosError (unknown -> звуження).
+ * - Завдання: прибрати any/unknown, додати контракти для постів.
  */
 
 import axios from "axios";
+//!======================================================
+// axios.get<T> повертає Promise<AxiosResponse<T>>; data матиме тип T.
+//!======================================================
+// DTO: описуємо структуру відповіді/запиту окремими типами, щоб не дублювати.
+//!======================================================
+// Помилки: catch отримує unknown; звужуємо через axios.isAxiosError.
+//!======================================================
+/* 🧩 Task 1 — модель поста
+ * Опиши Post з полями id/title/body/tags/reactions/views/userId.
+ */
+export type Post = any;
 
-interface Post {
-  id: number;
-  title: string;
-  body: string;
-  tags: string[];
-  reactions: {
-    likes: number;
-    dislikes: number;
-  };
-  views: number;
-  userId: number;
+/* 🧩 Task 2 — отримати всі пости
+ * Типізуй відповідь від dummyjson.com/posts (posts, total, skip, limit).
+ */
+export async function getAllPosts() {
+  const response = await axios.get("https://dummyjson.com/posts");
+  return response.data;
 }
 
-interface GetPostsResponse {
-  posts: Post[];
-  total: number;
-  skip: number;
-  limit: number;
+/* 🧩 Task 3 — отримати пост за id
+ * Додай тип для поста і параметра postId без any.
+ */
+export async function getPostById(postId): Promise<unknown> {
+  const response = await axios.get(`https://dummyjson.com/posts/${postId}`);
+  return response.data;
 }
 
-const getAllPosts = async (): Promise<GetPostsResponse> => {
-  const response = await axios.get<GetPostsResponse>(
-    "https://dummyjson.com/posts"
-  );
-  return response.data;
+/* 🧩 Task 4 — створити пост
+ * Типізуй тіло запиту (title/body/tags) та відповідь.
+ */
+export type NewPost = {
+  title: unknown;
+  body: unknown;
+  tags: unknown;
 };
 
-const getPostById = async (postId: number): Promise<Post> => {
-  const response = await axios.get<Post>(
-    `https://dummyjson.com/posts/${postId}`
-  );
+export async function createPost(newPost: NewPost): Promise<any> {
+  const response = await axios.post("https://dummyjson.com/posts/add", newPost);
   return response.data;
-};
-
-interface NewPostData {
-  title: string;
-  body: string;
-  tags: string[];
 }
 
-const createPost = async (newPost: NewPostData): Promise<Post> => {
-  const response = await axios.post<Post>(
-    "https://dummyjson.com/posts/add",
-    newPost
-  );
-  return response.data;
-};
-
-interface HttpResponse<T> {
-  data: T;
+/* 🧩 Task 5 — обгортка відповіді
+ * Узагальни HttpResponse<T>, прибери any і додай код статусу.
+ */
+export type HttpResponse<T> = {
+  data: any;
   code: number;
-}
+};
 
-const getAllPostsData: HttpResponse<Post> = {
+export const samplePost: HttpResponse<Post> = {
   data: {
-    id: 1,
-    title: "His mother had always taught him",
-    body: "His mother had always taught him not to ever think of himself as better than others. He'd tried to live by this motto. He never looked down on those who were less fortunate or who had less money than him. But the stupidity of the group of people he was talking to made him change his mind.",
-    tags: ["history", "american", "crime"],
-    reactions: {
-      likes: 192,
-      dislikes: 25,
-    },
-    views: 305,
-    userId: 121,
+    id: 0,
+    title: "Sample",
+    body: "Replace types",
+    tags: [],
+    reactions: { likes: 0, dislikes: 0 },
+    views: 0,
+    userId: 0,
   },
   code: 200,
-};
-
-const createUserData: HttpResponse<number> = {
-  data: 5,
-  code: 201,
 };
