@@ -1,88 +1,86 @@
 /**
- * Об'єкти описують структуру даних, де кожне поле має власний тип.
- * Можна використовувати як анонімні типи, так і `interface` чи `type`.
+ * Типізація об'єктів: interface та type, опціональні й readonly поля, вкладені структури.
+ *
+ * План уроку:
+ * - Розбір різниці між interface та type (коли що використовувати).
+ * - Приклади опціональних полів та readonly для захисту структури.
+ * - Вкладені об'єкти: як задавати типи для address, metadata тощо.
+ * - Коротке завдання: описати користувача з адресою і ролями.
  */
+//!======================================================
+// interface vs type: interface для форм об'єктів і підтримує declaration merging; type універсальний (об'єкти, union, intersection), але не мерджиться.
+//!======================================================
+// optional та readonly: поле з ? може бути відсутнє; readonly захищає значення після створення (ідентифікатори, константні властивості).
+//!======================================================
+// вкладені об'єкти: описуйте вкладені структури окремими типами (наприклад, Address, Metadata) і використовуйте їх усередині більших сутностей.
+//!======================================================
+// завдання: створити тип користувача з address і roles, де id readonly, email опційний, а roles — масив літералів.
+//!======================================================
 
-interface Address {
-  city: string;
-  country: string;
-  street: string;
-}
-
-
-
-interface User {
-  age: number;
-  isStudent: boolean;
-  name: string;
-  address: {
-    city: string;
-    country: string;
-    street: string;
-  },
-}
-
-const user: User = {
-  age: 25,
-  isStudent: true,
-  name: 'Vasya',
-  address: {
-    city: '',
-    country:'',
-    street: ''
-  }
-}
-
-
-
-
-
-// const book: { title: string; pages: number; isPublished: boolean } = {
-//   title: "Learning TypeScript",
-//   pages: 320,
-//   isPublished: true,
-// };
-
-/**
- * `interface` дозволяє повторно використовувати опис структури.
- * Додаємо `readonly id`, щоб заборонити змінювати значення після створення,
- * та `email?`, роблячи поле опціональним.
+//!======================================================
+/* 🧩 Task 1 — interface
+ * Опиши адресу та користувача з опціональним email і readonly id.
+ * Зараз усе типізовано як unknown/any — заміни на точні типи.
  */
-interface UserProfile {
-  readonly id: number;
-  name: string;
-  email?: string;
-  address?: {
-    city: string;
-    street: string;
-  };
+export interface Address {
+  city: unknown;
+  street: unknown;
+  apartment?: unknown;
 }
 
-const admin: UserProfile = {
+export interface User {
+  id: any;
+  name: any;
+  email?: any;
+  address: any;
+  roles: any;
+}
+
+export const vasyl: unknown = {
   id: 1,
-  name: "Iryna",
-  email: "iryna@example.com",
+  name: "Vasyl",
+  roles: ["student"],
   address: {
     city: "Lviv",
     street: "Shevchenka 10",
   },
 };
 
-/**
- * Оскільки `id` позначено як `readonly`, змінювати його не можна.
- * Наступний рядок спричинив би помилку компіляції:
- *
- * admin.id = 2; // Error: Cannot assign to 'id' because it is a read-only property.
- *
- * Для опціональних полів потрібно перевіряти їх наявність перед використанням.
+/* 🧩 Task 2 — type + об'єднання
+ * Опиши контакт і співробітника, додай літеральні ролі та позиції.
+ * Поки що position і contact мають нечіткі типи.
  */
-function printUserEmail(user: UserProfile): void {
-  if (user.email) {
-    console.log(`Пошта користувача: ${user.email}`);
-  } else {
-    console.log("Користувач не вказав електронну пошту");
-  }
-}
+export type Contact = {
+  phone?: unknown;
+  telegram?: unknown;
+};
 
-printUserEmail(admin);
-printUserEmail({ id: 2, name: "Oleh" });
+export type Employee = User & {
+  position: any;
+  isActive: unknown;
+  contact?: Contact;
+};
+
+export const olena: Employee = {
+  id: 2,
+  name: "Olena",
+  email: "olena@example.com",
+  roles: ["teacher", "admin"],
+  position: "mentor",
+  isActive: true,
+  address: {
+    city: "Kyiv",
+    street: "Khreshchatyk 1",
+  },
+  contact: {
+    phone: "+380991234567",
+  },
+};
+
+/* 🧩 Task 3 — опціональні поля
+ * Типізуй функцію так, щоб доступ до contact.phone не вимагав кастів.
+ */
+export function printContact(user) {
+  const contact = user.contact?.phone ?? "no phone";
+  console.log(`${user.name}: ${contact}`);
+}

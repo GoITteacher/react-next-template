@@ -12,8 +12,8 @@
 /* 🧩 Challenge 01 — Functions
  * Додай точні типи до параметрів та результату. Після типізації прибери зайві приведення.
  */
-export const calculateScore = (points: unknown, bonusMultiplier: unknown) => {
-  return (points as number) * (bonusMultiplier as number);
+export const calculateScore = (points, bonusMultiplier) => {
+  return points * bonusMultiplier;
 };
 
 /* 🧩 Challenge 02 — Objects
@@ -21,18 +21,7 @@ export const calculateScore = (points: unknown, bonusMultiplier: unknown) => {
  * Переконайся, що `roles` — це масив літеральних значень, а не просто `string[]`.
  */
 
-interface Session {
-  userId: number;
-  token: string;
-  expiresAt: Date,
-  metadata: {
-    ip: string;
-    roles: string[]
-  }
-}
-
-
-export const sessionSnapshot: Session = {
+export const sessionSnapshot: unknown = {
   userId: 501,
   token: "abc123",
   expiresAt: new Date(),
@@ -45,26 +34,26 @@ export const sessionSnapshot: Session = {
 /* 🧩 Challenge 03 — Primitives
  * Задай правильний примітивний тип без використання бридкого `any`.
  */
-export const currencyCode: string = "UAH";
+export const currencyCode: unknown = "UAH";
 
 /* 🧩 Challenge 04 — Types
  * Опиши літерально-об'єднувальний тип стани завантаження.
  */
-export type LoadingState = 'pending' | 'filfilled' | 'rejected';
+export type LoadingState = string;
 
 /* 🧩 Challenge 05 — Arrays
  * Перетвори тип на масив чисел. Подумай, чи потрібна незмінність (`readonly`).
  */
-export const temperatureHistory: number[] = [18.6, 17.4, 19.1, 20];
+export const temperatureHistory: unknown = [18.6, 17.4, 19.1, 20];
 
 /* 🧩 Challenge 06 — Functions
  * Типізуй аргументи та результат. Продумай, які значення може приймати `locale`.
  */
 export const formatUserName = (
-  firstName: string,
-  lastName: string,
-  locale?: string
-):string => {
+  firstName,
+  lastName,
+  locale
+) => {
   const fullName = `${String(firstName)} ${String(lastName)}`.trim();
   return locale === "ua" ? `Привіт, ${fullName}` : `Hello, ${fullName}`;
 };
@@ -72,23 +61,13 @@ export const formatUserName = (
 /* 🧩 Challenge 07 — Primitives
  * Використай числовий тип, який відповідає обмеженням на кількість запитів.
  */
-export const maxDailyRequests: number = 1000;
+export const maxDailyRequests: unknown = 1000;
 
 /* 🧩 Challenge 08 — Objects
  * Типізуй налаштування фіч-тогла. Додай `readonly`, де це має сенс.
  */
 
-interface Feature{
-key:string;
-enabled: boolean;
-rolloutPercentage: number;
-lastUpdatedBy: {
-  id: number;
-  name: string;
-}
-}
-
-export const featureToggle: Feature = {
+export const featureToggle: unknown = {
   key: "beta-layout",
   enabled: true,
   rolloutPercentage: 0.4,

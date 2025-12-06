@@ -1,86 +1,42 @@
 /**
- * Масиви можна типізувати двома синтаксисами: `number[]` чи `Array<number>`.
- * Обидва варіанти еквівалентні — вибирайте той, що краще читається у вашій команді.
+ * Типізація масивів: number[] чи Array<number>, підказки методів, масиви об'єктів і кортежі.
+ *
+ * Структура пояснення:
+ * 1) Два синтаксиси типів масивів і коли який читабельніший.
+ * 2) Як TS знає тип елементів у map/filter/find.
+ * 3) Масиви об'єктів: окремий інтерфейс + список.
+ * 4) Кортежі: фіксована кількість елементів різних типів.
+ * 5) Міні-практика: типізувати список курсів та кортеж налаштувань.
+ *
  */
-
+//!======================================================
+// синтаксис: number[] і Array<number> рівноцінні; обирайте читабельний для команди.
+//!======================================================
+// методи масивів: map/filter/find знають тип елементів і підказують параметри колбеків.
+//!======================================================
+// масиви об'єктів: краще описати окремий тип елемента й використовувати його для списку.
+//!======================================================
+// кортежі: фіксована кількість елементів різних типів, наприклад [string, number].
 //!======================================================
 
-// interface Coctail {
-//   _id: string;
-//   drink: string;
-//   video: string;
-// }
-
-// const coctails: Coctail[] = [];
-// const coctails: Array<Coctail> = [];
-
-// coctails.push({_id: '', drink: '', video: 'st'})
-
-// const data: number[] = 
-
-
-
-
 //!======================================================
-// const numbers: number[] = [3, 5, 8, 13];
-// const tags: Array<string> = ["frontend", "typescript", "education"];
-
-// tags.map(el=>{el.})
-
-
-/**
- * TypeScript підказує типи методів масиву. Наприклад, `map` знає,
- * що опрацьовує числа, а отже параметр `value` має тип `number`.
+/* 🧩 Task 1 — масив чисел
+ * Заміни unknown на коректний тип масиву та виправ push/map.
  */
-// const doubled = numbers.map((value) => value * 2);
-// const firstLongTag = tags.find((tag) => tag.length > 6);
+export const points: unknown = [10, 20, 30];
+// points.push("forty");
+// const doubled = points.map(p => p * 2);
 
-
-/**
- * Для масиву об'єктів найзручніше описати структуру окремим типом або інтерфейсом.
+/* 🧩 Task 2 — масив об'єктів
+ * Типізуй список курсів, щоб title і lessons були підказуваними.
  */
-interface Course {
-  title: string;
-  lessons: number;
-  isPublished: boolean;
-}
-
-const courses: Course[] = [
-  { title: "TypeScript Basics", lessons: 12, isPublished: true },
-  { title: "Advanced React Patterns", lessons: 18, isPublished: false },
+export const courses: any = [
+  { title: "TS Basics", lessons: 12 },
+  { title: "React", lessons: 18 },
 ];
+// const titles = courses.map(c => c.title.toUpperCase());
 
-//!======================================================
-
-// interface YProps{}
-// function foo(x: number, y){
-//   return x + y;
-// }
-// foo(25, '25')
-
-//!======================================================
-
-// interface User{
-//   name: string;
-//   age: number;
-// }
-
-// function getFilteredUsers(users: User[]){
-//   const res = users.filter(user=> user.name === 'Vasya');
-//   return res;
-// }
-
-
-
-//!======================================================
-
-/**
- * Функції, що працюють з масивами, одразу отримують коректні підказки.
+/* 🧩 Task 3 — кортеж налаштувань
+ * Опиши фіксований набір значень: назва, лічильник, активність.
  */
-// function publishCourse(courseList: Course[], courseTitle: string): Course[] {
-//   return courseList.map((course) =>
-//     course.title === courseTitle ? { ...course, isPublished: true } : course
-//   );
-// }
-
-// const updatedCourses = publishCourse(courses, "Advanced React Patterns");
+export const settings: unknown = ["autosave", 3, true];

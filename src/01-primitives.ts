@@ -1,55 +1,35 @@
 /**
  * Прості типи в TypeScript описують значення без внутрішньої структури.
- * Достатньо поставити двокрапку після імені змінної, щоб явно вказати тип.
+ *
+ * Структура заняття:
+ * 1) Коротко про цінність явної типізації.
+ * 2) Демонстрація: any, number, string, boolean, null, undefined.
+ * 3) Інференція типів: як TS сам розуміє типи змінних.
  */
+//!======================================================
+// any vs конкретні примітиви: any вимикає перевірки; number/string/boolean/undefined/null дають передбачуваність і підказки.
+//!======================================================
+// інференція: TS виводить тип з присвоєння (const x = 10 => number), але явна анотація потрібна, коли інференція двозначна.
+//!======================================================
+// null/undefined: позначають відсутність значення; часто комбінують через union з основним типом.
+//!======================================================
 
-
-// let y = "Hello World";
-// y = "Hello";
-// y = "World";
-// y = 25;
-
-
-// const y: boolean = true;
-// const x: boolean = false;
-
-// const explicitNumber: number = 42;
-// const explicitString: string = "TypeScript makes types explicit";
-// const explicitBoolean: boolean = true;
-// const explicitNull: null = null;
-// const explicitUndefined: undefined = undefined;
-
-/**
- * Тип можна не вказувати — компілятор сам зробить висновок (інференцію).
- * Тут `inferredNumber` автоматично матиме тип `number`.
-//  */
-// const inferredNumber = explicitNumber * 10;
-// const inferredString = `Answer: ${explicitNumber}`;
-
-/**
- * Тип `any` вимикає перевірку типів і дозволяє змінювати значення на будь-яке.
- * Користуйтеся ним лише там, де справді немає альтернатив.
+//!======================================================
+/* 🧩 Task 1 — типи змінних
+ * Додай явні примітивні типи замість unknown/any.
  */
+export let userName: any = "Olena";
+export const isOnline: unknown = true;
+export let clicks: any = 0;
 
-// let flexibleValue: any = "Starts as a string";
-// flexibleValue = 108;
-// flexibleValue = { message: "Тепер це об'єкт" };
-
-
-
-
-/**
- * `null` та `undefined` часто позначають відсутність значення.
- * Для зручності можна використовувати об'єднання: тип число або `null`.
+/* 🧩 Task 2 — інференція
+ * Дай TS самостійно вивести типи, а потім спробуй порушити типобезпеку.
  */
+export const basePrice = 100;
+export const totalPrice = basePrice + " UAH"; // <- виправ типізацію
 
-
-
-
-
-let optionalCount: number | null = null;
-optionalCount = 5;
-optionalCount = null;
-optionalCount = 25;
-
-let userAge: string | number | null = 25;
+/* 🧩 Task 3 — union для відсутності значення
+ * Обмеж те, що може бути null чи undefined, без any.
+ */
+export let optionalScore: unknown = null;
+export let promoCode: any = undefined;

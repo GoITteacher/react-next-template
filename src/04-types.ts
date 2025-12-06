@@ -1,49 +1,46 @@
 /**
- * Union (об'єднання) дозволяє вказати кілька можливих варіантів типу.
- * Зручно там, де змінна може набувати різних форм залежно від контексту.
+ * Власні типи: об'єднання (union), літеральні типи, перевірки типів (type guards).
+ *
+ * Що показати:
+ * - Приклади union: number | string для ідентифікаторів.
+ * - Літеральні типи: фіксовані статуси чи ролі.
+ * - Type guards: перевірка typeof/символи in для звуження типу.
+ *
  */
-// type Identifier = number | string;
+//!======================================================
+// union: дозволяє кілька варіантів типу (number | string) без any.
+//!======================================================
+// літеральні типи: обмежують значення до конкретних рядків/чисел, зручно для статусів/ролей.
+//!======================================================
+// type guards: перевірка typeof/Array.isArray/"prop" in звужує union до конкретного варіанта.
+//!======================================================
 
-// type UserAge = number | string;
 
-// const userAge: UserAge = 25;
-
-// const numericId: Identifier = 42;
-// const stringId: Identifier = "user-42";
-
-/**
- * Літеральні типи корисні для значень, що можуть бути лише з певного набору.
- * Часто використовуються для статусів, ролей, фільтрів тощо.
+//!======================================================
+/* 🧩 Task 1 — ідентифікатор
+ * Заміни any на union number|string і відформатуй для обох випадків.
  */
-// type OrderStatus = "pending" | "shipped" | "delivered" | "canceled";
+export type Identifier = any;
+export const formatId = (id: Identifier) => {
+  return typeof id === "number" ? `#${id}` : id.toUpperCase();
+};
 
-// const status: OrderStatus = '';
-
-// document.querySelector()?.insertAdjacentHTML('')
-
-
-// interface Order {
-//   id: Identifier;
-//   status: OrderStatus;
-// }
-
-// const order: Order = { id: "A-1024", status: "pending" };
-
-/**
- * При роботі з union типами складається дрібна логіка перевірок (type guards).
- * Це дозволяє безпечно звузити тип до конкретного варіанта.
+/* 🧩 Task 2 — статуси замовлення
+ * Опиши літеральні статуси, щоб заборонити довільні рядки.
  */
-function isTrackingAvailable(status: OrderStatus): boolean {
-  if (status === "pending" || status === "canceled") {
-    return false;
+export type OrderStatus = string;
+export const nextStatus = (status: OrderStatus): OrderStatus => {
+  if (status === "pending") return "shipped";
+  return "done";
+};
+
+/* 🧩 Task 3 — type guard
+ * Додай звуження типу для різних форм payload.
+ */
+export type Payload = { type: "text"; value: string } | { type: "count"; value: number };
+export function handlePayload(payload: any) {
+  if (payload.type === "text") {
+    return payload.value.trim();
   }
-
-  // На цьому етапі статус точно `"shipped"` або `"delivered"`.
-  return true;
+  return payload.value + 1;
 }
-
-function formatIdentifier(id: Identifier): string {
-  return typeof id === "number" ? `#${id.toString().padStart(6, "0")}` : id;
-}
-
-console.log(`Замовлення ${formatIdentifier(order.id)}:`, isTrackingAvailable(order.status));
