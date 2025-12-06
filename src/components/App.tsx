@@ -4,6 +4,9 @@ import Header from "./Header/Header";
 import MainSection from "./MainSection/MainSection";
 import Sidebar from "./Sidebar/Sidebar";
 
+/**
+ * Завдання: додайте типізацію пропсів для дочірніх компонентів за потреби.
+ */
 export default function App() {
   return (
     <div>

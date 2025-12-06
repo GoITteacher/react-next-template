@@ -1,3 +1,7 @@
+/**
+ * Завдання: додати типізацію пропсів книги (name, author).
+ * Поки що пропси не мають типу — додайте інтерфейс або type і використайте його.
+ */
 import css from "./BookItem.module.css";
 
 const BookItem = (props) => {
