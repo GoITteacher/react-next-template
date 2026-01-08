@@ -11,3 +11,21 @@
   - перезапустили проєкт – обов’язково.
 
 [Dummy Json Server](https://dummyjson.com/docs)
+
+
+```text
+app/
+├── inbox/
+│   ├── layout.tsx
+│   ├── @main/
+│   │   └── default.tsx          ← контент
+│   └── @sidebar/
+│       ├── page.tsx          ← сайдбар
+│       ├── filters/
+│       │   └── page.tsx      ← фільтри
+│       ├── folders/
+│       │   └── page.tsx      ← шось якісь папки
+│       └── settings/
+│           └── page.tsx      ← налаштування
+
+```
