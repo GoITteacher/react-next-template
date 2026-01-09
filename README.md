@@ -12,7 +12,6 @@
 
 [Dummy Json Server](https://dummyjson.com/docs)
 
-
 ```text
 app/
 ├── inbox/
