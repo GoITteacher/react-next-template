@@ -1,60 +1,73 @@
-// proxy.ts
-
-import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { parse } from "cookie";
+import { NextRequest, NextResponse } from "next/server";
 import { checkServerSession } from "./lib/serverApi";
+import { parse } from "cookie";
 
-const privateRoutes = ["/profile"];
+const privateRoutes = ["/tasks", "/news", "/notes"];
 
 export async function proxy(request: NextRequest) {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
-  const refreshToken = cookieStore.get("refreshToken")?.value;
+  console.log("START PROXY");
 
-  // Шлях, на який користувач намагається перейти
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken");
+  const refreshToken = cookieStore.get("refreshToken");
+
+  //pathname = '/news/create'.startWith("/news")
   const { pathname } = request.nextUrl;
-  const isPrivateRoute = privateRoutes.some((route) =>
-    pathname.startsWith(route)
+  const isPrivateRoute = privateRoutes.some((path) =>
+    pathname.startsWith(path)
   );
 
-  if (isPrivateRoute) {
-    if (!accessToken) {
-      if (refreshToken) {
-        // Отримуємо нові cookie
-        const data = await checkServerSession();
-        const setCookie = data.headers["set-cookie"];
+  // Якщо публічний маршрут - довзволяємо завантажити цю сторінку
+  if (!isPrivateRoute) {
+    return NextResponse.next();
+  }
 
-        if (setCookie) {
-          const cookieArray = Array.isArray(setCookie)
-            ? setCookie
-            : [setCookie];
-          for (const cookieStr of cookieArray) {
-            const parsed = parse(cookieStr);
-            const options = {
-              expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
-              path: parsed.Path,
-              maxAge: Number(parsed["Max-Age"]),
-            };
-            if (parsed.accessToken)
-              cookieStore.set("accessToken", parsed.accessToken, options);
-            if (parsed.refreshToken)
-              cookieStore.set("refreshToken", parsed.refreshToken, options);
-          } // важливо — передаємо нові cookie далі, щоб оновити їх у браузері
+  // Якщо є accessToken - довзволяємо завантажити цю сторінку
+  if (accessToken) {
+    return NextResponse.next();
+  }
 
-          return NextResponse.next({
-            headers: {
-              Cookie: cookieStore.toString(),
-            },
-          });
+  if (refreshToken) {
+    const res = await checkServerSession();
+
+    const setCookies = res.headers["set-cookie"];
+
+    if (setCookies) {
+      const cookieArr = Array.isArray(setCookies) ? setCookies : [setCookies];
+
+      for (const cookie of cookieArr) {
+        const parsedCookie = parse(cookie);
+
+        const options = {
+          expires: parsedCookie.Expires
+            ? new Date(parsedCookie.Expires)
+            : undefined,
+          path: parsedCookie.Path,
+          maxAge: Number(parsedCookie["Max-Age"]),
+        };
+
+        if (parsedCookie.accessToken) {
+          cookieStore.set("accessToken", parsedCookie.accessToken, options);
+        }
+
+        if (parsedCookie.refreshToken) {
+          cookieStore.set("refreshToken", parsedCookie.refreshToken, options);
         }
       }
-      // немає жодного токена — редірект на сторінку входу
-      return NextResponse.redirect(new URL("/sign-in", request.url));
+
+      // після отримання нових токенів, всеодно даємл дозвіл на завантаження сторінки
+      return NextResponse.next({
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+      });
     }
   }
-  // публічний маршрут або accessToken є — дозволяємо доступ
-  return NextResponse.next();
+
+  return NextResponse.redirect(new URL("/sign-in", request.url));
 }
 
-export const config = {};
+export const config = {
+  matcher: ["/tasks", "/news", "/notes"],
+};

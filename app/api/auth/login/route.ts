@@ -1,55 +1,53 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ApiError, globalApi } from "../../api";
+import { globalApi } from "../../globalApi";
 import { cookies } from "next/headers";
 import { parse } from "cookie";
+import { AxiosError } from "axios";
 
-export async function POST(req: NextRequest){
-    const body = await req.json();
-    try{
-        const res = await globalApi.post('/auth/login', body);
+export const POST = async (request: NextRequest) => {
+  try {
+    const userData = await request.json();
+    const res = await globalApi.post("/auth/login", userData);
 
-        const cookieStore = await cookies();
-        const setCookie = res.headers['set-cookie'];
+    const cookieStore = await cookies();
+    const setCookies = res.headers["set-cookie"];
 
-        if(setCookie){
-                // Примусово робимо масив
-            const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
+    if (setCookies) {
+      const cookieArr = Array.isArray(setCookies) ? setCookies : [setCookies];
 
-            // Проходимось по масиву та парсимо кожне значення
-            // щоб отримати результат у вигляді обʼєкту
-            for (const cookieStr of cookieArray) {
+      for (const cookie of cookieArr) {
+        const parsedCookie = parse(cookie);
 
-                const parsed = parse(cookieStr);
-                // Створюємо налаштування для cookies
-                const options = {
-                expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
-                path: parsed.Path,
-                maxAge: Number(parsed["Max-Age"]),
-                };
+        const options = {
+          expires: parsedCookie.Expires
+            ? new Date(parsedCookie.Expires)
+            : undefined,
+          path: parsedCookie.Path,
+          maxAge: Number(parsedCookie["Max-Age"]),
+        };
 
-                // Методом cookieStore.set додаємо кукі до нашого запиту
-                if (parsed.accessToken) {
-                    // cookieStore.set('імʼя ключа',  'значення токену',  додаткові налаштування)
-                    cookieStore.set("accessToken", parsed.accessToken, options);
-                }
-                if (parsed.refreshToken) {
-                    cookieStore.set("refreshToken", parsed.refreshToken, options);
-                }
-            }
-
-            return NextResponse.json(res.data);
+        if (parsedCookie.accessToken) {
+          cookieStore.set("accessToken", parsedCookie.accessToken, options);
         }
-        
-        return NextResponse.json({error: 'Unauthorized'}, {status: 401})
 
-    }catch(err){
-        const error = err as ApiError;
-        return NextResponse.json({
-            error: error.response?.data.error || error.message
-        },
-        {
-            status:error.status
-        })
+        if (parsedCookie.refreshToken) {
+          cookieStore.set("refreshToken", parsedCookie.refreshToken, options);
+        }
+      }
+
+      return NextResponse.json(res.data);
     }
-    
-}
+
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return NextResponse.json(
+      {
+        error: error.response?.data.message || error.message,
+      },
+      {
+        status: error.status,
+      }
+    );
+  }
+};
