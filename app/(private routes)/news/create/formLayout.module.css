@@ -86,6 +86,13 @@
   box-shadow: 0 10px 20px rgba(15, 23, 42, 0.25);
 }
 
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+  box-shadow: 0 6px 12px rgba(15, 23, 42, 0.25);
+}
+
 .checkboxRow {
   display: flex;
   align-items: center;
@@ -96,6 +103,14 @@
   margin: 0;
   font-size: 0.85rem;
   color: #94a3b8;
+}
+
+.helperTextError {
+  color: #dc2626;
+}
+
+.helperTextSuccess {
+  color: #16a34a;
 }
 
 @media (max-width: 540px) {
