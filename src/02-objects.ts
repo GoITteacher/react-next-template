@@ -22,19 +22,6 @@
  * Опиши адресу та користувача з опціональним email і readonly id.
  * Зараз усе типізовано як unknown/any — заміни на точні типи.
  */
-export interface Address {
-  city: unknown;
-  street: unknown;
-  apartment?: unknown;
-}
-
-export interface User {
-  id: any;
-  name: any;
-  email?: any;
-  address: any;
-  roles: any;
-}
 
 export const vasyl: unknown = {
   id: 1,
@@ -46,22 +33,14 @@ export const vasyl: unknown = {
   },
 };
 
+//!=========================================
+
 /* 🧩 Task 2 — type + об'єднання
  * Опиши контакт і співробітника, додай літеральні ролі та позиції.
  * Поки що position і contact мають нечіткі типи.
  */
-export type Contact = {
-  phone?: unknown;
-  telegram?: unknown;
-};
 
-export type Employee = User & {
-  position: any;
-  isActive: unknown;
-  contact?: Contact;
-};
-
-export const olena: Employee = {
+export const olena = {
   id: 2,
   name: "Olena",
   email: "olena@example.com",
@@ -77,10 +56,12 @@ export const olena: Employee = {
   },
 };
 
+//!=========================================
 /* 🧩 Task 3 — опціональні поля
  * Типізуй функцію так, щоб доступ до contact.phone не вимагав кастів.
  */
-export function printContact(user) {
-  const contact = user.contact?.phone ?? "no phone";
-  console.log(`${user.name}: ${contact}`);
-}
+
+// export function printContact(user) {
+//   const contact = user.contact?.phone ?? "no phone";
+//   console.log(`${user.name}: ${contact}`);
+// }
