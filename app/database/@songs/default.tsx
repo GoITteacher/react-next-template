@@ -1,5 +1,5 @@
 const Default = () => {
-  return null;
+  return <div>Default Songs</div>;
 };
 
 export default Default;

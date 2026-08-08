@@ -1,29 +1,25 @@
-"use client";
+import css from "./Layout.module.css";
 
-import Link from "next/link";
-import css from "./layout.module.css";
-type Props = {
+interface LayouProps {
+  activity: React.ReactNode;
+  category: React.ReactNode;
+  sales: React.ReactNode;
   sidebar: React.ReactNode;
-  page: React.ReactNode;
-  content: React.ReactNode;
-};
-
-export default function Layout({ page, sidebar, content }: Props) {
+  users: React.ReactNode;
+}
+const Layout = ({ sidebar, category, activity, users, sales }: LayouProps) => {
   return (
-    <div className={css["container"]}>
-      <ul className={css["navigation"]}>
-        <Link href="/dashboard/filters">Filters</Link>
-        <Link href="/dashboard/folders">Folders</Link>
-        <Link href="/dashboard/settings">Settings</Link>
-      </ul>
+    <div className={css["layout"]}>
+      {sidebar}
 
-      <div className={css["content"]}>
-        <div className={css["sidebar"]}>{sidebar}</div>
-        <div className={css["sidebar"]}>{content}</div>
-        <div className={css["page"]}>{page}</div>
-      </div>
+      <main className={css["content"]}>
+        {sales}
+        {activity}
+        {category}
+        {users}
+      </main>
     </div>
   );
-}
+};
 
-// dashboard/filters -> dashboard/@sidebar/filters/page.tsx + {children}
+export default Layout;

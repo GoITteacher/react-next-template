@@ -1,4 +1,7 @@
-"use client";
-export default function Loading() {
-  return <div>Loading sidebar...</div>;
-}
+import { SidebarSkeleton } from "../../../components/DashboardSkeleton/DashboardSkeleton";
+
+const Loading = () => {
+  return <SidebarSkeleton />;
+};
+
+export default Loading;
