@@ -1,15 +1,28 @@
 export interface Task {
-  id: string;
-  text: string;
+  _id: string;
+  title: string;
+  description: string;
   completed: boolean;
+  priority: string;
+  category: string;
+  tags: string[];
 }
 
 export interface NewTaskData {
-  text: string;
+  title: string;
+  description?: string;
+  completed?: boolean;
+  priority?: string;
+  category?: string;
+  tags?: string[];
 }
 
 export interface TaskUpdateData {
   id: string;
-  text?: string;
+  title?: string;
+  description?: string;
   completed?: boolean;
+  priority?: string;
+  category?: string;
+  tags?: string[];
 }
